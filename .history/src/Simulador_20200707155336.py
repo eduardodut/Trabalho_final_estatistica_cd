@@ -46,11 +46,9 @@ class Simulador():
 
         #dataframe que guardará os resultados de cada atualização  
         self.dataframe = pd.DataFrame(dict, index = [0])
-        self.popular(tamanho_matriz)
-
-
+            
     def popular(self, tamanho_matriz):
-        #lista de possíveis combinações de índices da matriz de dados
+
         permutacoes = permutations(list(range(tamanho_matriz)),2)
 
         lista_indices = list(permutacoes)
@@ -59,10 +57,9 @@ class Simulador():
 
         #cria o primeiro tipo2:
         self.indices_infectados_tipo_2.append(lista_indices[0])
-        self.matriz_individuos[lista_indices[0][0], lista_indices[0][1]] = self.fabrica_individuo.criar_individuo(Individuo.INFECTADO_TIPO_2,(lista_indices[0][0], lista_indices[0][1]))
+        self.matriz_individuos[lista_indices[0][0], lista_indices[0][1]] = self.fabrica_individuo.criar_individuo(Individuo.INFECTADO_TIPO_2)
         #cria o restante dos tipo 2:
-        for indice in lista_indices[1:self.num_inicial_tipo2-2]:
-            print(indice)
+
         #cria os tipo1:
 
 

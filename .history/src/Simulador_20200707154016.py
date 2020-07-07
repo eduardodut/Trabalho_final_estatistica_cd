@@ -3,7 +3,6 @@ import numpy as np
 from Matriz_esferica import Matriz_esferica
 from Individuo import Individuo
 import random
-from itertools import permutations 
 
 class Simulador():
 
@@ -21,7 +20,7 @@ class Simulador():
         self.num_atualizacoes = 0       
         self.indices_infectados_tipo_2 = []
         self.indices_infectados_tipo_1 = []
-        self.matriz_individuos = np.zeros([tamanho_matriz,tamanho_matriz])
+        self.matriz_individuos = []
         
         self.fabrica_individuo = Fabrica_individuo(
                                                 chance_infeccao,
@@ -46,31 +45,7 @@ class Simulador():
 
         #dataframe que guardará os resultados de cada atualização  
         self.dataframe = pd.DataFrame(dict, index = [0])
-        self.popular(tamanho_matriz)
-
-
-    def popular(self, tamanho_matriz):
-        #lista de possíveis combinações de índices da matriz de dados
-        permutacoes = permutations(list(range(tamanho_matriz)),2)
-
-        lista_indices = list(permutacoes)
-
-        random.shuffle(lista_indices)
-
-        #cria o primeiro tipo2:
-        self.indices_infectados_tipo_2.append(lista_indices[0])
-        self.matriz_individuos[lista_indices[0][0], lista_indices[0][1]] = self.fabrica_individuo.criar_individuo(Individuo.INFECTADO_TIPO_2,(lista_indices[0][0], lista_indices[0][1]))
-        #cria o restante dos tipo 2:
-        for indice in lista_indices[1:self.num_inicial_tipo2-2]:
-            print(indice)
-        #cria os tipo1:
-
-
-        #cria a população saudável:
-
-        for i in lista_indices[0:]: 
-            print(i)  
-
+            
 
         
                 
@@ -90,15 +65,14 @@ class Fabrica_individuo():
         self.chance_morte = chance_morte
         self.atualizacoes_cura = atualizacoes_cura
         
-    def criar_individuo(self, status_inicial, posicao):
+    def criar_individuo(self, status_inicial):
         
         return Individuo(
             status_inicial, 
             self.chance_infeccao, 
             self.chance_infeccao_tipo2, 
             self.chance_morte, 
-            self.atualizacoes_cura,
-            posicao)
+            self.atualizacoes_cura)
 
 
 
@@ -125,7 +99,7 @@ sim = Simulador(
     chance_morte,atualizacoes_cura)
 
 
-ind = sim.fabrica_individuo.criar_individuo(Individuo.MORTO, (0,0))
+ind = sim.fabrica_individuo.criar_individuo(Individuo.MORTO)
 
 
 
@@ -145,4 +119,24 @@ print(sim.dataframe)
 
 
 
+list1 = list(range(10))
 
+random.shuffle(list1)
+list2 = list(range(10))
+random.shuffle(list2)
+print(list1)
+print(list2)
+
+print(list(zip(list1,list2)))
+from itertools import permutations 
+
+
+perm = permutations(list(range(5)),2)
+
+lista_indices = list(perm)
+
+random.shuffle(lista_indices)
+
+
+for i in lista_indices: 
+    print( i  )  

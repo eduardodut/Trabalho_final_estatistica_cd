@@ -59,7 +59,7 @@ class Simulador():
 
         #cria o primeiro tipo2:
         self.indices_infectados_tipo_2.append(lista_indices[0])
-        self.matriz_individuos[lista_indices[0][0], lista_indices[0][1]] = self.fabrica_individuo.criar_individuo(Individuo.INFECTADO_TIPO_2,(lista_indices[0][0], lista_indices[0][1]))
+        self.matriz_individuos[lista_indices[0][0], lista_indices[0][1]] = self.fabrica_individuo.criar_individuo(Individuo.INFECTADO_TIPO_2)
         #cria o restante dos tipo 2:
         for indice in lista_indices[1:self.num_inicial_tipo2-2]:
             print(indice)

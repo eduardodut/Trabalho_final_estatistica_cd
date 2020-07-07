@@ -15,15 +15,15 @@ class Individuo():
         chance_infeccao, 
         chance_infeccao_tipo2, 
         chance_morte, 
-        atualizacoes_cura,
-        posicao):
+        atualizacoes_cura): 
+        #posicao):
         
         self.status = status
         self.chance_infeccao = chance_infeccao
         self.chance_infeccao_tipo2 = chance_infeccao_tipo2
         self.chance_morte = chance_morte
         self.atualizacoes_cura = atualizacoes_cura
-        self.posicao = posicao
+#        self.posicao = posicao
 
     def infectar_vizinhos(self, lista_vizinhos):
         lista_infectados_tipo1 = []
