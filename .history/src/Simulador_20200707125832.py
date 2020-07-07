@@ -1,0 +1,4 @@
+class Simulador():
+
+
+    pass
