@@ -4,8 +4,6 @@ from Matriz_esferica import Matriz_esferica
 from Individuo import Individuo
 import random
 from itertools import permutations 
-import matplotlib.pyplot as plt
-from matplotlib.colors import ListedColormap
 
 class Simulador():
 
@@ -39,50 +37,51 @@ class Simulador():
         self.num_inicial_tipo2 = int(self.populacao_inicial * percentual_inicial_tipo2)
         self.num_inicial_tipo1 = int(self.populacao_inicial * percentual_inicial_tipo1)
         self.num_inicial_sadios = self.populacao_inicial - (self.num_inicial_tipo2 + self.num_inicial_tipo1)
-        self.popular(tamanho_matriz)
+
         dict = {
                 'num_sadios':self.num_inicial_sadios,
                 'num_infect_t1':self.num_inicial_tipo1,
                 'num_infect_t2':self.num_inicial_tipo2,
                 'num_curados':0,
-                'num_mortos':0,
-                'matriz_posicionamento':self.matriz_individuos.flatten()}
+                'num_mortos':0}
 
         #dataframe que guardará os resultados de cada atualização  
         self.dataframe = pd.DataFrame(dict, index = [0])
-        
+        self.popular(tamanho_matriz)
 
 
     def popular(self, tamanho_matriz):
         #lista de possíveis combinações de índices da matriz de dados
         permutacoes = permutations(list(range(tamanho_matriz)),2)
-        #conversão para lista de tuplas(x,y)
+
         lista_indices = list(permutacoes)
-        #embaralhamento dos índices
+
         random.shuffle(lista_indices)
 
         #cria o primeiro tipo1:
         ind_x = lista_indices.pop()[0]
         ind_y = lista_indices.pop()[1]
+        self.indices_infectados_tipo_1.append((ind_x,ind_y))
         indiv = self.fabrica_individuo.criar_individuo(Individuo.INFECTADO_TIPO_1,(ind_x,ind_y))
         self.matriz_individuos[ind_x, ind_y] = Individuo.INFECTADO_TIPO_1
         self.individuos_infectados_tipo_1.append(indiv)
         
         #cria o restante dos tipos 1
         for i in range(1,self.num_inicial_tipo1):
-            ind_x = lista_indices.pop()[0]
-            ind_y = lista_indices.pop()[1]
-            indiv = self.fabrica_individuo.criar_individuo(Individuo.INFECTADO_TIPO_1,(ind_x,ind_y))
-            self.matriz_individuos[ind_x, ind_y] = Individuo.INFECTADO_TIPO_1
-            self.individuos_infectados_tipo_1.append(indiv)
+            pass
 
+
+      
         #cria o restante dos tipo 2:
-        for indice in range(self.num_inicial_tipo2):
-            ind_x = lista_indices.pop()[0]
-            ind_y = lista_indices.pop()[1]
-            indiv = self.fabrica_individuo.criar_individuo(Individuo.INFECTADO_TIPO_2,(ind_x,ind_y))
-            self.matriz_individuos[ind_x, ind_y] = Individuo.INFECTADO_TIPO_2
-            self.individuos_infectados_tipo_2.append(indiv)
+        for indice in lista_indices[1:self.num_inicial_tipo2-2]:
+            print(indice)
+        #cria os tipo1:
+
+
+        #cria a população saudável:
+
+        for i in lista_indices[0:]: 
+            print(i)  
 
           
                                             
@@ -127,7 +126,8 @@ percentual_inicial_tipo2 = 0.01
 
 
 sim = Simulador(
-    10,
+    1000, 
+    1, 
     percentual_inicial_tipo1, 
     percentual_inicial_tipo2, 
     chance_infeccao,
@@ -135,6 +135,7 @@ sim = Simulador(
     chance_morte,atualizacoes_cura)
 
 
+ind = sim.fabrica_individuo.criar_individuo(Individuo.MORTO, (0,0))
 
 
 
@@ -149,10 +150,9 @@ s = pd.Series(dict)
 sim.dataframe = sim.dataframe.append(s, ignore_index=True)
 
 print(sim.dataframe)
-print(sim.matriz_individuos.flatten())
 #print(sim.num_inicial_tipo2)
 
-cmap = ListedColormap(['w', 'y', 'r', 'b', 'black'])
-plt.matshow(sim.matriz_individuos, cmap = cmap);plt.show();
+
+
 
 

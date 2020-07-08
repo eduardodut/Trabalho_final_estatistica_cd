@@ -2,10 +2,9 @@ import random
 
 class Individuo():
     
-    
-    INFECTADO_TIPO_1 = 1 #assintomáticos e o infectado inicial
-    INFECTADO_TIPO_2 = 2 #sintomático
-    CURADO = 3
+    CURADO = 1
+    INFECTADO_TIPO_1 = 2 #assintomáticos e o infectado inicial
+    INFECTADO_TIPO_2 = 3 #sintomático
     MORTO = 4
     
     def __init__(

@@ -39,18 +39,17 @@ class Simulador():
         self.num_inicial_tipo2 = int(self.populacao_inicial * percentual_inicial_tipo2)
         self.num_inicial_tipo1 = int(self.populacao_inicial * percentual_inicial_tipo1)
         self.num_inicial_sadios = self.populacao_inicial - (self.num_inicial_tipo2 + self.num_inicial_tipo1)
-        self.popular(tamanho_matriz)
+
         dict = {
                 'num_sadios':self.num_inicial_sadios,
                 'num_infect_t1':self.num_inicial_tipo1,
                 'num_infect_t2':self.num_inicial_tipo2,
                 'num_curados':0,
-                'num_mortos':0,
-                'matriz_posicionamento':self.matriz_individuos.flatten()}
+                'num_mortos':0}
 
         #dataframe que guardará os resultados de cada atualização  
         self.dataframe = pd.DataFrame(dict, index = [0])
-        
+        self.popular(tamanho_matriz)
 
 
     def popular(self, tamanho_matriz):
@@ -135,6 +134,7 @@ sim = Simulador(
     chance_morte,atualizacoes_cura)
 
 
+ind = sim.fabrica_individuo.criar_individuo(Individuo.MORTO, (0,0))
 
 
 
@@ -149,10 +149,12 @@ s = pd.Series(dict)
 sim.dataframe = sim.dataframe.append(s, ignore_index=True)
 
 print(sim.dataframe)
-print(sim.matriz_individuos.flatten())
+print(sim.matriz_individuos)
 #print(sim.num_inicial_tipo2)
 
 cmap = ListedColormap(['w', 'y', 'r', 'b', 'black'])
-plt.matshow(sim.matriz_individuos, cmap = cmap);plt.show();
+plt.matshow(sim.matriz_individuos, cmap = cmap)
+
+plt.show()
 
 

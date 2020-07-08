@@ -45,8 +45,8 @@ class Simulador():
                 'num_infect_t1':self.num_inicial_tipo1,
                 'num_infect_t2':self.num_inicial_tipo2,
                 'num_curados':0,
-                'num_mortos':0,
-                'matriz_posicionamento':self.matriz_individuos.flatten()}
+                'num_mortos':0}
+                #'matriz_posicionamento':self.matriz_individuos.toarray()}
 
         #dataframe que guardará os resultados de cada atualização  
         self.dataframe = pd.DataFrame(dict, index = [0])

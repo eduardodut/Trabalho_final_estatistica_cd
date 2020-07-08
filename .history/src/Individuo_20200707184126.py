@@ -2,12 +2,13 @@ import random
 
 class Individuo():
     
-    
+    SADIO = 0
     INFECTADO_TIPO_1 = 1 #assintomáticos e o infectado inicial
     INFECTADO_TIPO_2 = 2 #sintomático
     CURADO = 3
     MORTO = 4
     
+
     def __init__(
         self, 
         status, 
@@ -37,7 +38,7 @@ class Individuo():
         
     def infectar(self, vizinho):
 
-        if (self.status == Individuo.INFECTADO_TIPO_2 or self.status == Individuo.INFECTADO_TIPO_1):
+        if (self.status == Individuo.INFECTADO_TIPO_2 or self.status == Individuo.INFECTADO_TIPO_1) and vizinho.status == Individuo.SADIO:
             #número aleatório para chance de infectar o vizinho
             rng_infeccao = random.random()
             if rng_infeccao <= self.chance_infeccao:
