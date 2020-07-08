@@ -112,3 +112,47 @@ class Fabrica_individuo():
             posicao)
 
 
+
+
+
+chance_infeccao = 0.3             
+chance_infeccao_tipo2 = 0.2       
+chance_morte = 0.2                
+atualizacoes_cura = 10           
+percentual_inicial_tipo1 = 0.05    
+percentual_inicial_tipo2 = 0.01
+
+
+
+
+
+sim = Simulador(
+    10,
+    percentual_inicial_tipo1, 
+    percentual_inicial_tipo2, 
+    chance_infeccao,
+    chance_infeccao_tipo2,
+    chance_morte,atualizacoes_cura)
+
+
+
+
+
+
+
+dict = {'num_sadios':1,
+                'num_infect_t1':2,
+                'num_infect_t2':3,
+                'num_curados':4,
+                'num_mortos':5}
+s = pd.Series(dict)                
+sim.dataframe = sim.dataframe.append(s, ignore_index=True)
+
+print(sim.dataframe)
+print(sim.matriz_individuos.flatten())
+#print(sim.num_inicial_tipo2)
+
+cmap = ListedColormap(['w', 'y', 'r', 'b', 'black'])
+plt.matshow(sim.matriz_individuos, cmap = cmap);plt.show();
+
+
