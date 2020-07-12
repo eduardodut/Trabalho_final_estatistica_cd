@@ -87,7 +87,7 @@ class Simulador():
 
     def salvar_posicionamento(self):
         
-        self.lista_matrizes_status.append(np.copy(self.matriz_status))
+        self.lista_matrizes_status.append(self.matriz_status.copy())
         
 
     def verificar_infeccao(self, lista_infectantes):
