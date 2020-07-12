@@ -9,7 +9,7 @@ from matplotlib.colors import ListedColormap
 from scipy.sparse import csr_matrix, lil_matrix
 import math
 
-import copy
+
 
 
 class Simulador():
@@ -87,7 +87,7 @@ class Simulador():
 
     def salvar_posicionamento(self):
         
-        self.lista_matrizes_status.append(copy.deepcopy(self.matriz_status))
+        self.lista_matrizes_status.append(np.copy(self.matriz_status))
         
 
     def verificar_infeccao(self, lista_infectantes):
@@ -382,4 +382,3 @@ sim.executar_simulacao()
 print(sim.dataframe)
 pd.DataFrame(sim.dict_resumo, index=[0]).head()
 plt.matshow(sim.lista_matrizes_status[0], cmap = cmap, vmin= 0, vmax = 4)
-plt.show()
