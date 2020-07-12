@@ -7,7 +7,6 @@ from itertools import permutations
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from scipy.sparse import csr_matrix, lil_matrix
-import math
 
 
 
@@ -47,8 +46,8 @@ class Simulador():
        
         self.matriz_status = np.zeros((tamanho_matriz, tamanho_matriz),dtype= np.uint8)#lil_matrix((tamanho_matriz, tamanho_matriz),dtype= np.uint8) #
         self.matriz_atualizacoes_cura = np.zeros((tamanho_matriz, tamanho_matriz),dtype= np.uint8)#lil_matrix((tamanho_matriz, tamanho_matriz),dtype= np.uint8)#
-            
-        self.dict_resumo = {}
+
+
 
         #self.matriz_status = self.df_individuos.to_numpy()
         self.popular(tamanho_matriz)
@@ -327,36 +326,43 @@ class Simulador():
     def executar_simulacao(self):
         while (self.dataframe.iloc[-1]['num_infect_t1']+self.dataframe.iloc[-1]['num_infect_t2']) > 0:
             self.iterar()   
-        
-        num_sadios_min = self.dataframe.iloc[-1]['num_sadios']
-        
-        indice_infeccao_maxima = self.dataframe[self.dataframe.num_sadios == num_sadios_min].index[0]
-       
-        metade_infeccao_maxima = math.ceil(indice_infeccao_maxima/2)
-       
+        print(self.dataframe)
+        #descobre linha que ocorreu o máximo de infectados
 
-        self.dict_resumo = {
-            "pop_inicial": self.populacao_inicial,
-            "tipo1_inicial":self.dataframe.iloc[0]['num_infect_t1'],
-            "tipo2_inicial":self.dataframe.iloc[0]['num_infect_t2'],
-            "n/2_100%_infectados":metade_infeccao_maxima,
-            "tipo1_n/2":self.dataframe.iloc[metade_infeccao_maxima]['num_infect_t1'],
-            "tipo2_n/2":self.dataframe.iloc[metade_infeccao_maxima]['num_infect_t2'],
-            "curados_n/2":self.dataframe.iloc[metade_infeccao_maxima]['num_curados'],
-            "mortos_n/2":self.dataframe.iloc[metade_infeccao_maxima]['num_mortos'],
-            "n_atualizacoes_100%_infectados":indice_infeccao_maxima,
-            "tipo1_n":self.dataframe.iloc[indice_infeccao_maxima]['num_infect_t1'],
-            "tipo2_n":self.dataframe.iloc[indice_infeccao_maxima]['num_infect_t2'],
-            "curados_n":self.dataframe.iloc[indice_infeccao_maxima]['num_curados'],
-            "mortos_n":self.dataframe.iloc[indice_infeccao_maxima]['num_mortos'],
-            "numero_total_atualizacoes":self.dataframe.shape[0]-1,
-            "sadios_final":self.dataframe.iloc[-1]['num_sadios'],
-            "curados_final":self.dataframe.iloc[-1]['num_curados'],
-            "mortos_final":self.dataframe.iloc[-1]['num_mortos']
-                            }
-        
 
- 
+                                            
+proporcao_inicial_infectados = random.random()
+proporcao_t1 = random.random()
+
+chance_infeccao = 0.3        
+chance_infeccao_tipo2 = 0.2  
+chance_morte = 0.02              
+atualizacoes_cura = 10           
+percentual_inicial_tipo1 = proporcao_t1*proporcao_inicial_infectados
+percentual_inicial_tipo2 = (1-proporcao_t1)*proporcao_inicial_infectados
+#print("% inicial t1: ",percentual_inicial_tipo1)
+#print("% inicial t2: ",percentual_inicial_tipo2)
+
+sim = Simulador(
+    10,
+    percentual_inicial_tipo1, 
+    percentual_inicial_tipo2, 
+    chance_infeccao,
+    chance_infeccao_tipo2,
+    chance_morte,atualizacoes_cura)
+
+#print(sim.lista_matrizes_posicionamento[0])
+#print(sim.lista_infectados_tipo_2)
+#print(sim.lista_infectados_tipo_1)
+cmap = ListedColormap(['w', 'y', 'r', 'blue', 'black'])
+
+sim.executar_simulacao()   
            
+# for i in range(30):
+#     #plt.matshow(sim.lista_matrizes_status[i].toarray(), cmap = cmap, vmin= 0, vmax = 4)
+#     sim.iterar()
+# print(sim.dataframe) 
+# plt.show()
+
 
  

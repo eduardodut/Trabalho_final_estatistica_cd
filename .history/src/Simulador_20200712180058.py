@@ -354,9 +354,32 @@ class Simulador():
             "curados_final":self.dataframe.iloc[-1]['num_curados'],
             "mortos_final":self.dataframe.iloc[-1]['num_mortos']
                             }
-        
+        print(self.dict_resumo)
 
- 
+                                            
+proporcao_inicial_infectados = random.random()
+proporcao_t1 = random.random()
+
+chance_infeccao = 0.3        
+chance_infeccao_tipo2 = 0.2  
+chance_morte = 0.02              
+atualizacoes_cura = 10           
+percentual_inicial_tipo1 = proporcao_t1*proporcao_inicial_infectados
+percentual_inicial_tipo2 = (1-proporcao_t1)*proporcao_inicial_infectados
+#print("% inicial t1: ",percentual_inicial_tipo1)
+#print("% inicial t2: ",percentual_inicial_tipo2)
+
+sim = Simulador(
+    10,
+    percentual_inicial_tipo1, 
+    percentual_inicial_tipo2, 
+    chance_infeccao,
+    chance_infeccao_tipo2,
+    chance_morte,atualizacoes_cura)
+
+cmap = ListedColormap(['w', 'y', 'r', 'blue', 'black'])
+
+sim.executar_simulacao()   
            
 
  
