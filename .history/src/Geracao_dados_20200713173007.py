@@ -1,7 +1,7 @@
 from Simulador import Simulador
 import math
 nome_simulacao = "simulacoes_chance_100%" 
-n_simulacoes = 1000
+n_simulacoes = 10
 tamanho_matriz = 100
 chance_infeccao = 1 
 chance_infeccao_sintomatico = 0.2
