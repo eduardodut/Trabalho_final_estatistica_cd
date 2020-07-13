@@ -45,9 +45,9 @@ class Simulador():
         proporcao_t1_t2 = random.random()
         
         self.num_inicial_tipo1 = 1 + round(inserir_infectados_aleatorios*proporcao_t1_t2*num_inicial_infectados)
-       
+        print("self.num_inicial_tipo1: ", self.num_inicial_tipo1)
         self.num_inicial_tipo2 = round(inserir_infectados_aleatorios*(1-proporcao_t1_t2)*num_inicial_infectados)
-        
+        print("self.num_inicial_tipo2: ", self.num_inicial_tipo2)
         self.num_inicial_sadios = self.populacao_inicial - (self.num_inicial_tipo2 + self.num_inicial_tipo1)
        
         self.matriz_status = np.zeros((tamanho_matriz, tamanho_matriz),dtype= np.uint8)#lil_matrix((tamanho_matriz, tamanho_matriz),dtype= np.uint8) #
@@ -295,7 +295,7 @@ class Simulador():
         
         self.criar_individuo(Individuo.INFECTADO_TIPO_1, indice)
         self.lista_infectados_tipo_1.append(indice)
-        
+        print("criado um tipo 1")
         #cria o restante dos tipos 1
         for i in range(self.num_inicial_tipo1-1):
            
@@ -360,7 +360,7 @@ class Simulador():
        
         metade_infeccao_maxima = int(indice_infeccao_maxima/2)
       
-      
+        print(metade_infeccao_maxima+1)
         self.dict_resumo = {
             "pop_inicial": self.populacao_inicial,
             "tipo1_inicial":self.dataframe.iloc[0]['num_infect_t1'],
@@ -370,11 +370,11 @@ class Simulador():
             "tipo2_n/2":self.dataframe.iloc[metade_infeccao_maxima]['num_infect_t2'],
             "curados_n/2":self.dataframe.iloc[metade_infeccao_maxima]['num_curados'],
             "mortos_n/2":self.dataframe.iloc[metade_infeccao_maxima]['num_mortos'],
-            "n/2+1_100%_infectados":metade_infeccao_maxima+1,
-            "tipo1_n/2+1":self.dataframe.iloc[metade_infeccao_maxima+1]['num_infect_t1'],
-            "tipo2_n/2+1":self.dataframe.iloc[metade_infeccao_maxima+1]['num_infect_t2'],
-            "curados_n/2+1":self.dataframe.iloc[metade_infeccao_maxima+1]['num_curados'],
-            "mortos_n/2+1":self.dataframe.iloc[metade_infeccao_maxima+1]['num_mortos'],
+            "n/2+1_100%_infectados":metade_infeccao_maxima,
+            "tipo1_n/2+1":self.dataframe.iloc[int(metade_infeccao_maxima)]['num_infect_t1'],
+            "tipo2_n/2+1":self.dataframe.iloc[metade_infeccao_maxima]['num_infect_t2'],
+            "curados_n/2+1":self.dataframe.iloc[metade_infeccao_maxima]['num_curados'],
+            "mortos_n/2+1":self.dataframe.iloc[metade_infeccao_maxima]['num_mortos'],
             "n_atualizacoes_100%_infectados":indice_infeccao_maxima,
             "tipo1_n":self.dataframe.iloc[indice_infeccao_maxima]['num_infect_t1'],
             "tipo2_n":self.dataframe.iloc[indice_infeccao_maxima]['num_infect_t2'],

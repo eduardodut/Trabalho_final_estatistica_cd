@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from Matriz_esferica import Matriz_esferica
-from Individuo import Individuo
+from Individuo import Individuo, Fabrica_individuo
 import random
 from itertools import permutations 
 import matplotlib.pyplot as plt
@@ -22,11 +22,13 @@ class Simulador():
     def __init__(
         self,
         tamanho_matriz,                 #numero de linhas e colunas da matriz esférica
+        num_inicial_tipo1,       #percentual inicial da população que será infectada tipo 1
+        num_inicial_tipo2,       #percentual inicial da população que será infectada tipo 2
         chance_infeccao,                #chance que um infectado tipo 2 tem de infectar um indivíduo saudável
         chance_infeccao_tipo2,          #chance de um indivíduo infectado se tornar contagioso
         chance_morte,                   #chance de um indivíduo tipo 2 morrer ao fim de uma atualização
-        atualizacoes_cura,              #número de atualizações necessárias para a cura de um indivíduo tipo 1 ou 2
-        inserir_infectados_aleatorios):
+        atualizacoes_cura):             #número de atualizações necessárias para a cura de um indivíduo tipo 1 ou 2
+        
         self.num_atualizacoes = 0       
         self.lista_infectados_tipo_2 = []
         self.lista_infectados_tipo_1 = []
@@ -39,15 +41,8 @@ class Simulador():
         self.atualizacoes_cura = atualizacoes_cura
         
         self.populacao_inicial = int(tamanho_matriz**2)
-
-        num_inicial_infectados = random.randint(0,tamanho_matriz*tamanho_matriz-1)
-  
-        proporcao_t1_t2 = random.random()
-        
-        self.num_inicial_tipo1 = 1 + round(inserir_infectados_aleatorios*proporcao_t1_t2*num_inicial_infectados)
-       
-        self.num_inicial_tipo2 = round(inserir_infectados_aleatorios*(1-proporcao_t1_t2)*num_inicial_infectados)
-        
+        self.num_inicial_tipo2 = num_inicial_tipo1
+        self.num_inicial_tipo1 = num_inicial_tipo2
         self.num_inicial_sadios = self.populacao_inicial - (self.num_inicial_tipo2 + self.num_inicial_tipo1)
        
         self.matriz_status = np.zeros((tamanho_matriz, tamanho_matriz),dtype= np.uint8)#lil_matrix((tamanho_matriz, tamanho_matriz),dtype= np.uint8) #
@@ -63,7 +58,8 @@ class Simulador():
 
         #objeto que é responsável por validar a movimentação no grid n x n    
         self.matriz_esferica = Matriz_esferica(tamanho_matriz)
-             
+         
+        
 
        
         dict = {
@@ -270,48 +266,26 @@ class Simulador():
     def popular(self, tamanho_matriz):
        
         #lista de possíveis combinações de índices da matriz de dados
-        indice_x = list(range(0,tamanho_matriz))
-        indice_y = list(range(0,tamanho_matriz))
-        random.shuffle(indice_x)
-        random.shuffle(indice_y)
-        
-        lista_indices = []
-        for x in indice_x:
-            for y in indice_y:
-                lista_indices.append((x,y))
-                # if len(lista_indices) > self.num_inicial_tipo1 + self.num_inicial_tipo1 + 1:
-                #     break
-        #permutacoes = permutations(list(range(tamanho_matriz)),2)
+        permutacoes = permutations(list(range(tamanho_matriz)),2)
         #conversão para lista de tuplas(x,y)
-        #lista_indices = list(zip(indice_x,indice_y))
+        lista_indices = list(permutacoes)
         #embaralhamento dos índices
-        #random.shuffle(lista_indices)
-       
-        indice_matriz = 0
-        
+        random.shuffle(lista_indices)
+         
         #cria o primeiro tipo1:
-        indice = lista_indices[indice_matriz]
-        indice_matriz+=1
-        
+        indice = lista_indices.pop()
         self.criar_individuo(Individuo.INFECTADO_TIPO_1, indice)
         self.lista_infectados_tipo_1.append(indice)
-        
         #cria o restante dos tipos 1
-        for i in range(self.num_inicial_tipo1-1):
-           
-            indice = lista_indices[indice_matriz]
-            indice_matriz+=1
+        for i in range(int(self.num_inicial_tipo1-1)):
+            indice = lista_indices.pop()
             self.criar_individuo(Individuo.INFECTADO_TIPO_1,indice)
             self.lista_infectados_tipo_1.append(indice)
         #cria o restante dos tipo 2:
-        
-        for indice in range(self.num_inicial_tipo2):
-           
-            indice = lista_indices[indice_matriz]
-            indice_matriz+=1
+        for indice in range(int(self.num_inicial_tipo2)):
+            indice = lista_indices.pop()
             self.criar_individuo(Individuo.INFECTADO_TIPO_2,indice)
             self.lista_infectados_tipo_2.append(indice)
-            
     
     def trocar(self,matriz,ponto_ini,ponto_final):
         x_ini = ponto_ini[0]
@@ -358,9 +332,9 @@ class Simulador():
         #descobre linha que ocorreu o máximo de infectados
         indice_infeccao_maxima = self.dataframe[self.dataframe.num_sadios == num_sadios_min].index[0]
        
-        metade_infeccao_maxima = int(indice_infeccao_maxima/2)
+        metade_infeccao_maxima = math.ceil(indice_infeccao_maxima/2)
       
-      
+
         self.dict_resumo = {
             "pop_inicial": self.populacao_inicial,
             "tipo1_inicial":self.dataframe.iloc[0]['num_infect_t1'],
@@ -370,11 +344,6 @@ class Simulador():
             "tipo2_n/2":self.dataframe.iloc[metade_infeccao_maxima]['num_infect_t2'],
             "curados_n/2":self.dataframe.iloc[metade_infeccao_maxima]['num_curados'],
             "mortos_n/2":self.dataframe.iloc[metade_infeccao_maxima]['num_mortos'],
-            "n/2+1_100%_infectados":metade_infeccao_maxima+1,
-            "tipo1_n/2+1":self.dataframe.iloc[metade_infeccao_maxima+1]['num_infect_t1'],
-            "tipo2_n/2+1":self.dataframe.iloc[metade_infeccao_maxima+1]['num_infect_t2'],
-            "curados_n/2+1":self.dataframe.iloc[metade_infeccao_maxima+1]['num_curados'],
-            "mortos_n/2+1":self.dataframe.iloc[metade_infeccao_maxima+1]['num_mortos'],
             "n_atualizacoes_100%_infectados":indice_infeccao_maxima,
             "tipo1_n":self.dataframe.iloc[indice_infeccao_maxima]['num_infect_t1'],
             "tipo2_n":self.dataframe.iloc[indice_infeccao_maxima]['num_infect_t2'],
