@@ -37,7 +37,7 @@ class Simulador():
         self.chance_infeccao_tipo2 = chance_infeccao_tipo2
         self.chance_morte = chance_morte
         self.atualizacoes_cura = atualizacoes_cura
-        random.seed()
+        
         self.populacao_inicial = int(tamanho_matriz**2)
 
         num_inicial_infectados = random.randint(0,tamanho_matriz*tamanho_matriz-1)
@@ -159,7 +159,7 @@ class Simulador():
     
     
     def iterar(self):
-        random.seed()
+
         #Verifica os novos infectados por infectantes do tipo 1 e 2
         #print(self.lista_infectados_tipo_1+self.lista_infectados_tipo_2)
         lista_novos_infectados_tipo1, lista_novos_infectados_tipo2 = self.verificar_infeccao(self.lista_infectados_tipo_1+self.lista_infectados_tipo_2)
@@ -254,8 +254,8 @@ class Simulador():
         self.num_atualizacoes +=1
 
     def infectar(self, chance_infeccao, chance_infeccao_tipo2):
-        random.seed(random.randint(1,100))
         saida = Individuo.SADIO    
+    
         #número aleatório para chance de infectar o vizinho
         rng_infeccao = random.random()
         if rng_infeccao <= chance_infeccao:
@@ -272,7 +272,6 @@ class Simulador():
         #lista de possíveis combinações de índices da matriz de dados
         indice_x = list(range(0,tamanho_matriz))
         indice_y = list(range(0,tamanho_matriz))
-        random.seed(random.randint(1,100))
         random.shuffle(indice_x)
         random.shuffle(indice_y)
         
@@ -296,7 +295,7 @@ class Simulador():
         
         self.criar_individuo(Individuo.INFECTADO_TIPO_1, indice)
         self.lista_infectados_tipo_1.append(indice)
-        random.seed(random.randint(1,100))
+        
         #cria o restante dos tipos 1
         for i in range(self.num_inicial_tipo1-1):
            
@@ -329,7 +328,6 @@ class Simulador():
         return self.matriz_status[indice[0], indice[1]]
 
     def mover_infectante(self, posicao_inicial):
-        random.seed(random.randint(1,100))
         pos_x, pos_y = posicao_inicial[0], posicao_inicial[1]
         rng_posicao = random.random()
         if rng_posicao <=0.25:
@@ -359,10 +357,10 @@ class Simulador():
         num_sadios_min = self.dataframe.iloc[-1]['num_sadios']
         #descobre linha que ocorreu o máximo de infectados
         indice_infeccao_maxima = self.dataframe[self.dataframe.num_sadios == num_sadios_min].index[0]
-        indice_pico_infeccao = self.dataframe[['num_infect_t1', 'num_infect_t2']].sum(1).idxmax()
-        # print("Indice pico: ", indice_pico_infeccao)
+        indice_pico_infeccao = self.dataframe.loc[self.dataframe[['num_infect_t1', 'num_infect_t2']].sum(1).idxmax()]
+        print(indice_pico_infeccao)
         #print(df.sum(axis=1).idxmax())
-        metade_pico_infeccao = int(indice_pico_infeccao/2)    
+
 
         metade_infeccao_maxima = int(indice_infeccao_maxima/2)
       
@@ -371,13 +369,11 @@ class Simulador():
             "pop_inicial": self.populacao_inicial,
             "tipo1_inicial":self.dataframe.iloc[0]['num_infect_t1'],
             "tipo2_inicial":self.dataframe.iloc[0]['num_infect_t2'],
-            
             "n/2_100%_infectados":metade_infeccao_maxima,
             "tipo1_n/2":self.dataframe.iloc[metade_infeccao_maxima]['num_infect_t1'],
             "tipo2_n/2":self.dataframe.iloc[metade_infeccao_maxima]['num_infect_t2'],
             "curados_n/2":self.dataframe.iloc[metade_infeccao_maxima]['num_curados'],
             "mortos_n/2":self.dataframe.iloc[metade_infeccao_maxima]['num_mortos'],
-            
             "n/2+1_100%_infectados":metade_infeccao_maxima+1,
             "tipo1_n/2+1":self.dataframe.iloc[metade_infeccao_maxima+1]['num_infect_t1'],
             "tipo2_n/2+1":self.dataframe.iloc[metade_infeccao_maxima+1]['num_infect_t2'],
@@ -388,28 +384,9 @@ class Simulador():
             "tipo2_n":self.dataframe.iloc[indice_infeccao_maxima]['num_infect_t2'],
             "curados_n":self.dataframe.iloc[indice_infeccao_maxima]['num_curados'],
             "mortos_n":self.dataframe.iloc[indice_infeccao_maxima]['num_mortos'],
-            
-            "n/2_atualizacoes_pico":metade_pico_infeccao,
-            "tipo1_n/2pico":self.dataframe.iloc[metade_pico_infeccao]['num_infect_t1'],
-            "tipo2_n/2pico":self.dataframe.iloc[metade_pico_infeccao]['num_infect_t2'],
-            "curados_n/2pico":self.dataframe.iloc[metade_pico_infeccao]['num_curados'],
-            "mortos_n/2pico":self.dataframe.iloc[metade_pico_infeccao]['num_mortos'],
-            
-            "n/2+1_atualizacoes_pico":metade_pico_infeccao+1,
-            "tipo1_n/2+1pico":self.dataframe.iloc[metade_pico_infeccao+1]['num_infect_t1'],
-            "tipo2_n/2+1pico":self.dataframe.iloc[metade_pico_infeccao+1]['num_infect_t2'],
-            "curados_n/2+1pico":self.dataframe.iloc[metade_pico_infeccao+1]['num_curados'],
-            "mortos_n/2+1pico":self.dataframe.iloc[metade_pico_infeccao+1]['num_mortos'],
-
-            "n_atualizacoes_pico":indice_pico_infeccao,
-            "tipo1_pico":self.dataframe.iloc[indice_pico_infeccao]['num_infect_t1'],
-            "tipo2_pico":self.dataframe.iloc[indice_pico_infeccao]['num_infect_t2'],
-            "curados_pico":self.dataframe.iloc[indice_pico_infeccao]['num_curados'],
-            "mortos_pico":self.dataframe.iloc[indice_pico_infeccao]['num_mortos'],
-            
-            "numero_total_atualizacoes":self.dataframe.shape[0]-1,
+            "numero_total_atualizacoes":self.dataframe.shape[0],
             "sadios_final":self.dataframe.iloc[-1]['num_sadios'],
             "curados_final":self.dataframe.iloc[-1]['num_curados'],
             "mortos_final":self.dataframe.iloc[-1]['num_mortos']
                             }
-       
+        print(self.dataframe)

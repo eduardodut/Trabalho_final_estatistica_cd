@@ -8,7 +8,7 @@ import pandas as pd
 # d.to_csv(r'C:/Users/Eduar/Documents/GitHub/Trabalho_final_estatistica_cd/dados/simulacoes_chance_100%.txt', sep=' ', index=False)
 # print(d.head())
 nome_simulacao = "simulacoes_chance_100%" 
-n_simulacoes = 10
+n_simulacoes = 5
 tamanho_matriz = 100
 chance_infeccao = 1 
 chance_infeccao_sintomatico = 0.2

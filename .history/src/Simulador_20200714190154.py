@@ -254,8 +254,8 @@ class Simulador():
         self.num_atualizacoes +=1
 
     def infectar(self, chance_infeccao, chance_infeccao_tipo2):
-        random.seed(random.randint(1,100))
         saida = Individuo.SADIO    
+        random.seed()
         #número aleatório para chance de infectar o vizinho
         rng_infeccao = random.random()
         if rng_infeccao <= chance_infeccao:
@@ -272,7 +272,6 @@ class Simulador():
         #lista de possíveis combinações de índices da matriz de dados
         indice_x = list(range(0,tamanho_matriz))
         indice_y = list(range(0,tamanho_matriz))
-        random.seed(random.randint(1,100))
         random.shuffle(indice_x)
         random.shuffle(indice_y)
         
@@ -296,7 +295,7 @@ class Simulador():
         
         self.criar_individuo(Individuo.INFECTADO_TIPO_1, indice)
         self.lista_infectados_tipo_1.append(indice)
-        random.seed(random.randint(1,100))
+        
         #cria o restante dos tipos 1
         for i in range(self.num_inicial_tipo1-1):
            
@@ -329,7 +328,6 @@ class Simulador():
         return self.matriz_status[indice[0], indice[1]]
 
     def mover_infectante(self, posicao_inicial):
-        random.seed(random.randint(1,100))
         pos_x, pos_y = posicao_inicial[0], posicao_inicial[1]
         rng_posicao = random.random()
         if rng_posicao <=0.25:

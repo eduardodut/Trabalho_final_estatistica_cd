@@ -256,6 +256,7 @@ class Simulador():
     def infectar(self, chance_infeccao, chance_infeccao_tipo2):
         random.seed(random.randint(1,100))
         saida = Individuo.SADIO    
+        
         #número aleatório para chance de infectar o vizinho
         rng_infeccao = random.random()
         if rng_infeccao <= chance_infeccao:
