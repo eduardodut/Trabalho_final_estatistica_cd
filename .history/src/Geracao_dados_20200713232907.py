@@ -3,9 +3,7 @@ import math
 import pandas as pd
 
 d = pd.read_pickle('C:/Users/Eduar/Documents/GitHub/Trabalho_final_estatistica_cd/dados/simulacoes_chance_30%.pkl')
-d.to_csv(r'C:/Users/Eduar/Documents/GitHub/Trabalho_final_estatistica_cd/dados/simulacoes_chance_30%.txt', sep=' ', index=False)
-d = pd.read_pickle('C:/Users/Eduar/Documents/GitHub/Trabalho_final_estatistica_cd/dados/simulacoes_chance_100%.pkl')
-d.to_csv(r'C:/Users/Eduar/Documents/GitHub/Trabalho_final_estatistica_cd/dados/simulacoes_chance_100%.txt', sep=' ', index=False)
+d.to_csv(sep=' ', index=False, header=False)
 print(d.head())
 nome_simulacao = "simulacoes_chance_100%" 
 n_simulacoes = 1000
