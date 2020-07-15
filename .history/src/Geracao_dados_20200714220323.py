@@ -9,7 +9,7 @@ import pandas as pd
 # print(d.head())
 nome_simulacao = "simulacoes_chance_100%" 
 n_simulacoes = 2000
-tamanho_matriz = 70
+tamanho_matriz = 99
 chance_infeccao = 1 
 chance_infeccao_sintomatico = 0.2
 
