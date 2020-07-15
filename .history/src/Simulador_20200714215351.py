@@ -278,23 +278,21 @@ class Simulador():
         random.shuffle(indice_x)
         random.seed()
         random.shuffle(indice_y)
-        #print()
+        print()
         lista_indices = []
         # for x in indice_x:
         #     for y in indice_y:
         #         lista_indices.append((x,y))
                 # if len(lista_indices) > self.num_inicial_tipo1 + self.num_inicial_tipo1 + 1:
                 #     break
-        permutacoes = permutations(list(range(tamanho_matriz)),2)
-        #print("lista range", list(range(tamanho_matriz)))
+        permutacoes = permutations(list(range(tamanho_matriz+1)),2)
+        print("lista range", list(range(tamanho_matriz)))
         #conversão para lista de tuplas(x,y)
         lista_indices = list(permutacoes)
-        for i in list(range(tamanho_matriz)):
-            lista_indices.append((i,i))
-        #print("tamanho da lista de indices: ", lista_indices)
+        print("tamanho da lista de indices: ", len(lista_indices))
         #embaralhamento dos índices
         random.shuffle(lista_indices)
-        #print("tamanho da lista de indices: ", lista_indices)
+       
         indice_matriz = 0
         
         #cria o primeiro tipo1:

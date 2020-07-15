@@ -15,7 +15,7 @@ chance_infeccao_sintomatico = 0.2
 
 chance_morte = 0.02 
 atualizacoes_cura = 10 
-inserir_infectados_aleatorios = False
+inserir_infectados_aleatorios = True
 import numpy as np
 import random                                         
 
